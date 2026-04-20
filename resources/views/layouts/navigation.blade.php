@@ -24,6 +24,10 @@
                         {{ __('Cart') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('checkout.index')" :active="request()->routeIs('checkout.*')">
+                        {{ __('Checkout') }}
+                    </x-nav-link>
+
                     <x-nav-link :href="route('buyer.orders.index')" :active="request()->routeIs('buyer.orders.*')">
                         {{ __('My Orders') }}
                     </x-nav-link>

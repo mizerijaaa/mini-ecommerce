@@ -10,6 +10,7 @@ Route::get('/', function () {
 
 Volt::route('/marketplace', 'market.index')->name('market.index');
 Volt::route('/cart', 'cart.index')->middleware(['auth', 'buyer'])->name('cart.index');
+Volt::route('/checkout', 'checkout.index')->middleware(['auth', 'buyer'])->name('checkout.index');
 Volt::route('/buyer/orders', 'buyer.orders.index')->middleware(['auth', 'buyer'])->name('buyer.orders.index');
 Volt::route('/buyer/orders/{orderId}', 'buyer.orders.show')->middleware(['auth', 'buyer'])->name('buyer.orders.show');
 Volt::route('/vendor/orders', 'vendor.orders.index')->middleware(['auth', 'vendor'])->name('vendor.orders.index');
