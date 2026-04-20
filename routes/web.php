@@ -14,10 +14,9 @@ Volt::route('/checkout', 'checkout.index')->middleware(['auth', 'buyer'])->name(
 Volt::route('/buyer/orders', 'buyer.orders.index')->middleware(['auth', 'buyer'])->name('buyer.orders.index');
 Volt::route('/buyer/orders/{orderId}', 'buyer.orders.show')->middleware(['auth', 'buyer'])->name('buyer.orders.show');
 Volt::route('/vendor/orders', 'vendor.orders.index')->middleware(['auth', 'vendor'])->name('vendor.orders.index');
+Volt::route('/vendor/products', 'vendor.products.index')->middleware(['auth', 'vendor'])->name('vendor.products.index');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Volt::route('/dashboard', 'dashboard')->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
