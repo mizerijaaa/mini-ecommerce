@@ -7,6 +7,7 @@ use App\Domain\OrderManagement\Exceptions\PaymentFailedException;
 use App\Domain\OrderManagement\Services\CheckoutService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
+use function Livewire\Volt\layout;
 
 new class extends Component {
     public string $paymentMethod = 'card';
@@ -43,7 +44,9 @@ new class extends Component {
 
         $this->redirectRoute('buyer.orders.show', ['orderId' => $order->id], navigate: true);
     }
-}->layout('layouts.app');
+};
+
+layout('layouts.app');
 
 ?>
 

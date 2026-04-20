@@ -7,6 +7,7 @@ use App\Domain\Cart\DTOs\AddToCartDTO;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
+use function Livewire\Volt\layout;
 
 new class extends Component {
     use WithPagination;
@@ -47,6 +48,12 @@ new class extends Component {
 
     public function addToCart(string $productId): void
     {
+        if (! Auth::check()) {
+            $this->redirectRoute('login', navigate: true);
+
+            return;
+        }
+
         $result = app(AddToCartAction::class)->execute(new AddToCartDTO(
             userId: (string) Auth::id(),
             productId: $productId,
@@ -75,7 +82,9 @@ new class extends Component {
             perPage: 12
         );
     }
-}->layout('layouts.app');
+};
+
+layout('layouts.app');
 
 ?>
 

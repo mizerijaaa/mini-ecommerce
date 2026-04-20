@@ -7,6 +7,7 @@ use App\Domain\Cart\DTOs\UpdateCartItemQuantityDTO;
 use App\Domain\Cart\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
+use function Livewire\Volt\layout;
 
 new class extends Component {
     public ?string $warning = null;
@@ -85,7 +86,9 @@ new class extends Component {
     {
         return array_reduce($this->groupedItems, fn (float $carry, array $g) => $carry + (float) $g['subtotal'], 0.0);
     }
-}->layout('layouts.app');
+};
+
+layout('layouts.app');
 
 ?>
 

@@ -4,6 +4,7 @@ use App\Domain\OrderManagement\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
+use function Livewire\Volt\layout;
 
 new class extends Component {
     use WithPagination;
@@ -18,7 +19,9 @@ new class extends Component {
             ->orderByDesc('created_at')
             ->paginate(10);
     }
-}->layout('layouts.app');
+};
+
+layout('layouts.app');
 
 ?>
 

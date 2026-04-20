@@ -3,6 +3,7 @@
 use App\Domain\OrderManagement\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
+use function Livewire\Volt\layout;
 
 new class extends Component {
     public string $orderId;
@@ -57,7 +58,9 @@ new class extends Component {
     {
         return (float) $this->order->items->sum(fn ($i) => (float) $i->price * (int) $i->quantity);
     }
-}->layout('layouts.app');
+};
+
+layout('layouts.app');
 
 ?>
 

@@ -6,6 +6,7 @@ use App\Domain\OrderManagement\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
+use function Livewire\Volt\layout;
 
 new class extends Component {
     use WithPagination;
@@ -52,7 +53,9 @@ new class extends Component {
     {
         return array_map(fn (OrderStatus $s) => $s->value, OrderStatus::cases());
     }
-}->layout('layouts.app');
+};
+
+layout('layouts.app');
 
 ?>
 
