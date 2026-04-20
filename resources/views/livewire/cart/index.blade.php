@@ -296,7 +296,7 @@ layout('layouts.app');
                     'bg-gray-900 text-white hover:bg-gray-800' => ! $this->hasUnavailableItems,
                     'bg-gray-100 text-gray-400 cursor-not-allowed' => $this->hasUnavailableItems,
                 ])
-                @aria-disabled($this->hasUnavailableItems ? 'true' : 'false')
+                aria-disabled="{{ $this->hasUnavailableItems ? 'true' : 'false' }}"
                 @if ($this->hasUnavailableItems) onclick="return false;" @endif
             >
                 Proceed to checkout
