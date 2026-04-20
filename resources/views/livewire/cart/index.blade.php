@@ -5,6 +5,7 @@ use App\Domain\Cart\Actions\UpdateCartItemQuantityAction;
 use App\Domain\Cart\DTOs\RemoveFromCartDTO;
 use App\Domain\Cart\DTOs\UpdateCartItemQuantityDTO;
 use App\Domain\Cart\Models\Cart;
+use App\Domain\ProductCatalog\Enums\ProductStatus;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 use function Livewire\Volt\layout;
@@ -77,11 +78,26 @@ new class extends Component {
                 'stock' => (int) $item->product->stock,
                 'quantity' => (int) $item->quantity,
                 'line_total' => $lineTotal,
+                'status' => $item->product->status?->value ?? null,
+                'is_active' => $item->product->status === ProductStatus::Active,
             ];
             $groups[$vendorId]['subtotal'] += $lineTotal;
         }
 
         return $groups;
+    }
+
+    public function getHasUnavailableItemsProperty(): bool
+    {
+        foreach ($this->groupedItems as $group) {
+            foreach ($group['items'] as $item) {
+                if (! ($item['is_active'] ?? false)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public function getGrandTotalProperty(): float
@@ -115,6 +131,12 @@ layout('layouts.app');
     @if ($notice)
         <div class="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
             {{ $notice }}
+        </div>
+    @endif
+
+    @if ($this->hasUnavailableItems)
+        <div class="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            Some items in your cart are no longer available (draft/archived). Remove them to proceed to checkout.
         </div>
     @endif
 
@@ -179,6 +201,11 @@ layout('layouts.app');
                                                 <div class="mt-1 text-xs text-gray-500">
                                                     ${{ number_format((float) $item['price'], 2) }} each · Stock {{ $item['stock'] }}
                                                 </div>
+                                                @if (! $item['is_active'])
+                                                    <div class="mt-1 text-xs font-medium text-amber-700">
+                                                        Unavailable ({{ $item['status'] ?? 'unknown' }})
+                                                    </div>
+                                                @endif
                                             </div>
 
                                             <div class="text-right">
@@ -263,8 +290,14 @@ layout('layouts.app');
             </div>
 
             <a
-                href="{{ route('checkout.index') }}"
-                class="mt-4 inline-flex w-full items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+                href="{{ $this->hasUnavailableItems ? '#' : route('checkout.index') }}"
+                @class([
+                    'mt-4 inline-flex w-full items-center justify-center rounded-md px-4 py-2 text-sm font-medium',
+                    'bg-gray-900 text-white hover:bg-gray-800' => ! $this->hasUnavailableItems,
+                    'bg-gray-100 text-gray-400 cursor-not-allowed' => $this->hasUnavailableItems,
+                ])
+                @aria-disabled($this->hasUnavailableItems ? 'true' : 'false')
+                @if ($this->hasUnavailableItems) onclick="return false;" @endif
             >
                 Proceed to checkout
             </a>

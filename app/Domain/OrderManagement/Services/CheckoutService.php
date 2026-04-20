@@ -16,6 +16,7 @@ use App\Domain\OrderManagement\Enums\OrderStatus;
 use App\Domain\OrderManagement\Exceptions\CheckoutException;
 use App\Domain\OrderManagement\Exceptions\PaymentFailedException;
 use App\Domain\OrderManagement\Models\Order;
+use App\Domain\ProductCatalog\Enums\ProductStatus;
 use Illuminate\Support\Facades\DB;
 
 class CheckoutService
@@ -56,10 +57,14 @@ class CheckoutService
                     throw new CheckoutException('A cart item is missing its product.');
                 }
 
+                if ($product->status !== ProductStatus::Active) {
+                    throw new CheckoutException("{$product->name} is no longer available.");
+                }
+
                 $validation = $this->stockValidation->validate($product, $item->quantity);
 
                 if (! $validation->allowed || $validation->allowedQuantity !== $item->quantity) {
-                    throw new CheckoutException("Insufficient stock for {$product->name}.");
+                    throw new CheckoutException($validation->warning ?? "Unable to purchase {$product->name}.");
                 }
             }
 

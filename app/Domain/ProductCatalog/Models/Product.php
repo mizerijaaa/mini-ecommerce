@@ -4,6 +4,7 @@ namespace App\Domain\ProductCatalog\Models;
 
 use App\Domain\Cart\Models\CartItem;
 use App\Domain\OrderManagement\Models\OrderItem;
+use App\Domain\ProductCatalog\Enums\ProductStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -20,7 +21,7 @@ class Product extends Model
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', 'active');
+        return $query->where('status', ProductStatus::Active);
     }
 
     public function scopeForVendor(Builder $query, string|Vendor $vendor): Builder
@@ -63,7 +64,7 @@ class Product extends Model
         return [
             'price' => 'decimal:2',
             'stock' => 'integer',
-            'status' => 'string',
+            'status' => ProductStatus::class,
         ];
     }
 }

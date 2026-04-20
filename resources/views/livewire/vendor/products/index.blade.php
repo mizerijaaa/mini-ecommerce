@@ -6,6 +6,7 @@ use App\Domain\ProductCatalog\Actions\UpdateProductAction;
 use App\Domain\ProductCatalog\DTOs\CreateProductDTO;
 use App\Domain\ProductCatalog\DTOs\DeleteProductDTO;
 use App\Domain\ProductCatalog\DTOs\UpdateProductDTO;
+use App\Domain\ProductCatalog\Enums\ProductStatus;
 use App\Domain\ProductCatalog\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
@@ -23,7 +24,7 @@ new class extends Component {
     public string $price = '';
     public string $stock = '0';
     public ?string $imageUrl = null;
-    public string $status = 'draft';
+    public string $status = ProductStatus::Draft->value;
 
     public function createProduct(): void
     {
@@ -67,7 +68,7 @@ new class extends Component {
         ));
 
         $this->reset(['name', 'description', 'price', 'stock', 'imageUrl', 'status']);
-        $this->status = 'draft';
+        $this->status = ProductStatus::Draft->value;
         $this->message = 'Product created.';
         $this->resetPage();
     }
@@ -120,7 +121,7 @@ new class extends Component {
 
     public function getStatusesProperty(): array
     {
-        return ['draft', 'active', 'archived'];
+        return ProductStatus::values();
     }
 };
 

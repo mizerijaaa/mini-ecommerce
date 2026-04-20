@@ -8,6 +8,7 @@ use App\Domain\ProductCatalog\Actions\CreateProductAction;
 use App\Domain\ProductCatalog\Actions\DeleteProductAction;
 use App\Domain\ProductCatalog\DTOs\CreateProductDTO;
 use App\Domain\ProductCatalog\DTOs\DeleteProductDTO;
+use App\Domain\ProductCatalog\Enums\ProductStatus;
 use App\Domain\ProductCatalog\Models\Product;
 use App\Domain\ProductCatalog\Models\Vendor;
 use App\Models\User;
@@ -24,12 +25,12 @@ it('vendor can create a product (draft/active/archived)', function () {
         price: 19.99,
         stock: 10,
         imageUrl: null,
-        status: 'draft',
+        status: ProductStatus::Draft->value,
     ));
 
     expect($product)->toBeInstanceOf(Product::class);
     expect($product->vendor_id)->toBe($vendor->id);
-    expect($product->status)->toBe('draft');
+    expect($product->status)->toBe(ProductStatus::Draft);
 });
 
 it('vendor can delete their own product but not others', function () {

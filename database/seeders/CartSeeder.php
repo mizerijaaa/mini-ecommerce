@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Cart\Models\CartItem;
 use App\Domain\IdentityAndAccess\Models\User;
+use App\Domain\ProductCatalog\Enums\ProductStatus;
 use App\Domain\ProductCatalog\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -14,7 +15,7 @@ class CartSeeder extends Seeder
     public function run(): void
     {
         $products = Product::query()
-            ->where('status', 'active')
+            ->where('status', ProductStatus::Active)
             ->get(['id', 'stock']);
 
         if ($products->isEmpty()) {

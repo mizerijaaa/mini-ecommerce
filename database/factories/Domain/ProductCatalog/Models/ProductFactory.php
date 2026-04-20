@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Domain\ProductCatalog\Models;
 
+use App\Domain\ProductCatalog\Enums\ProductStatus;
 use App\Domain\ProductCatalog\Models\Product;
 use App\Domain\ProductCatalog\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -54,7 +55,7 @@ class ProductFactory extends Factory
             'image_url' => fake()->boolean(70)
                 ? "https://placehold.co/900x900/png?text={$imageText}"
                 : null,
-            'status' => fake()->randomElement(['draft', 'active', 'archived']),
+            'status' => fake()->randomElement(ProductStatus::values()),
         ];
     }
 }

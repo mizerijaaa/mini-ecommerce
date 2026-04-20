@@ -12,6 +12,7 @@ use App\Domain\OrderManagement\Exceptions\PaymentFailedException;
 use App\Domain\OrderManagement\Models\Order;
 use App\Domain\OrderManagement\Models\OrderItem;
 use App\Domain\OrderManagement\Services\CheckoutService;
+use App\Domain\ProductCatalog\Enums\ProductStatus;
 use App\Domain\ProductCatalog\Models\Product;
 use App\Domain\ProductCatalog\Models\Vendor;
 use App\Models\User;
@@ -23,7 +24,7 @@ it('successful checkout decreases stock and clears cart', function () {
 
     $product = Product::factory()->create([
         'vendor_id' => $vendor->id,
-        'status' => 'active',
+        'status' => ProductStatus::Active,
         'price' => 20.00,
         'stock' => 10,
     ]);
@@ -59,7 +60,7 @@ it('failed checkout due to payment total > 999 keeps cart intact', function () {
 
     $product = Product::factory()->create([
         'vendor_id' => $vendor->id,
-        'status' => 'active',
+        'status' => ProductStatus::Active,
         'price' => 1000.00,
         'stock' => 10,
     ]);
@@ -88,7 +89,7 @@ it('cart stock validation prevents exceeding stock (clamps with warning)', funct
 
     $product = Product::factory()->create([
         'vendor_id' => $vendor->id,
-        'status' => 'active',
+        'status' => ProductStatus::Active,
         'stock' => 3,
         'price' => 10.00,
     ]);
@@ -130,7 +131,7 @@ it('invalid order status transitions are blocked', function () {
 
     $product = Product::factory()->create([
         'vendor_id' => $vendor->id,
-        'status' => 'active',
+        'status' => ProductStatus::Active,
         'price' => 25.00,
         'stock' => 10,
     ]);

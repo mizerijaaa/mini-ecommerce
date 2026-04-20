@@ -4,6 +4,7 @@ namespace App\Domain\ProductCatalog\Actions;
 
 use App\Domain\IdentityAndAccess\Models\User;
 use App\Domain\ProductCatalog\DTOs\CreateProductDTO;
+use App\Domain\ProductCatalog\Enums\ProductStatus;
 use App\Domain\ProductCatalog\Models\Product;
 use Illuminate\Support\Facades\Gate;
 
@@ -19,6 +20,10 @@ class CreateProductAction
 
         if ($vendorId === '') {
             abort(403);
+        }
+
+        if (! in_array($dto->status, ProductStatus::values(), true)) {
+            abort(422);
         }
 
         return Product::query()->create([

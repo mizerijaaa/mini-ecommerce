@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Domain\ProductCatalog\Enums\ProductStatus;
 use App\Domain\ProductCatalog\Models\Product;
 use App\Domain\ProductCatalog\Models\Vendor;
 use Illuminate\Database\Seeder;
@@ -25,7 +26,7 @@ class ProductSeeder extends Seeder
                     ->count($createCount)
                     ->state([
                         'vendor_id' => $vendor->id,
-                        'status' => 'active',
+                        'status' => ProductStatus::Active,
                     ])
                     ->create();
             });
