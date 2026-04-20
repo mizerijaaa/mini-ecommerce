@@ -24,6 +24,7 @@ new class extends Component {
 
         $this->warning = null;
         $this->notice = 'Item removed.';
+        $this->dispatch('cart-updated');
     }
 
     public function updateQuantity(string $cartItemId, $quantity): void
@@ -39,6 +40,7 @@ new class extends Component {
 
         $this->warning = $result->warning;
         $this->notice = $result->warning ? null : 'Quantity updated.';
+        $this->dispatch('cart-updated');
     }
 
     public function getCartProperty(): Cart

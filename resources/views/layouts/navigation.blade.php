@@ -23,10 +23,6 @@
                     </x-nav-link>
 
                     @auth
-                        <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
-                            {{ __('Cart') }}
-                        </x-nav-link>
-
                         <x-nav-link :href="route('checkout.index')" :active="request()->routeIs('checkout.*')">
                             {{ __('Checkout') }}
                         </x-nav-link>
@@ -47,6 +43,9 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
+                    <div class="me-2">
+                        <livewire:cart-nav-button />
+                    </div>
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -115,9 +114,9 @@
             </x-responsive-nav-link>
 
             @auth
-                <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
-                    {{ __('Cart') }}
-                </x-responsive-nav-link>
+                <div class="px-4 py-2">
+                    <livewire:cart-nav-button />
+                </div>
 
                 <x-responsive-nav-link :href="route('checkout.index')" :active="request()->routeIs('checkout.*')">
                     {{ __('Checkout') }}

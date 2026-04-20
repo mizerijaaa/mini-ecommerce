@@ -42,6 +42,7 @@ new class extends Component {
             return;
         }
 
+        $this->dispatch('cart-updated');
         $this->redirectRoute('buyer.orders.show', ['orderId' => $order->id], navigate: true);
     }
 };

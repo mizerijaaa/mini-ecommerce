@@ -67,6 +67,7 @@ new class extends Component {
         }
 
         $this->dispatch('toast', text: $result->warning ?? 'Added to cart.');
+        $this->dispatch('cart-updated');
     }
 
     public function with(): array
@@ -277,9 +278,6 @@ layout('layouts.app');
                 <div class="text-sm text-gray-600">
                     Showing <span class="font-medium text-gray-900">{{ $this->products->total() }}</span> products
                 </div>
-                <a href="{{ route('cart.index') }}" class="text-sm font-medium text-gray-900 hover:text-gray-700">
-                    View cart
-                </a>
             </div>
 
             <div class="mt-4">
@@ -291,7 +289,7 @@ layout('layouts.app');
         @else
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 @foreach ($this->products as $product)
-                    <div class="group rounded-xl bg-white shadow-sm ring-1 ring-gray-200 overflow-hidden hover:shadow-md transition">
+                    <div class="group h-full rounded-xl bg-white shadow-sm ring-1 ring-gray-200 overflow-hidden hover:shadow-md transition flex flex-col">
                         <div class="aspect-square bg-gray-100 relative">
                             @if ($product->image_url)
                                 <img
@@ -314,26 +312,26 @@ layout('layouts.app');
                             </div>
                         </div>
 
-                        <div class="p-4">
+                        <div class="p-4 flex flex-col flex-1">
                             <div class="flex items-start justify-between gap-3">
-                                <div>
+                                <div class="min-w-0">
                                     <div class="text-sm font-semibold text-gray-900 line-clamp-2">
                                         {{ $product->name }}
                                     </div>
                                     <div class="mt-1 text-xs text-gray-500">In stock: {{ $product->stock }}</div>
                                 </div>
-                                <div class="text-sm font-semibold text-gray-900">
+                                <div class="shrink-0 text-sm font-semibold text-gray-900">
                                     ${{ number_format((float) $product->price, 2) }}
                                 </div>
                             </div>
 
-                            <div class="mt-4 flex items-center justify-between gap-3">
+                            <div class="mt-auto pt-4 flex items-center gap-3">
                                 <button
                                     type="button"
                                     wire:click="addToCart('{{ $product->id }}')"
                                     wire:loading.attr="disabled"
                                     @disabled((int) $product->stock <= 0)
-                                    class="inline-flex flex-1 items-center justify-center rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed"
+                                    class="inline-flex w-full items-center justify-center rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed"
                                 >
                                     @if ((int) $product->stock <= 0)
                                         Out of stock
@@ -341,9 +339,6 @@ layout('layouts.app');
                                         Add to cart
                                     @endif
                                 </button>
-                                <a href="{{ route('cart.index') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900">
-                                    Go to cart
-                                </a>
                             </div>
                         </div>
                     </div>
