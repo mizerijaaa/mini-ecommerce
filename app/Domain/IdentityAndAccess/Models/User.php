@@ -5,7 +5,7 @@ namespace App\Domain\IdentityAndAccess\Models;
 use App\Domain\Cart\Models\Cart;
 use App\Domain\OrderManagement\Models\Order;
 use App\Domain\ProductCatalog\Models\Vendor;
-use Database\Factories\UserFactory;
+use Database\Factories\Domain\IdentityAndAccess\Models\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -21,6 +21,25 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasUlids, Notifiable;
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function hasVendorProfile(): bool
+    {
+        if ($this->relationLoaded('vendor')) {
+            return $this->vendor !== null;
+        }
+
+        return $this->vendor()->exists();
+    }
+
+    public function isVendor(): bool
+    {
+        return $this->isAdmin() || $this->hasVendorProfile();
+    }
 
     public function vendor(): HasOne
     {
