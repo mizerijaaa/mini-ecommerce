@@ -14,4 +14,3 @@ class VendorSeeder extends Seeder
             ->create();
     }
 }
-

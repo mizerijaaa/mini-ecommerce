@@ -17,4 +17,3 @@ class AuthServiceProvider extends ServiceProvider
         Product::class => ProductPolicy::class,
     ];
 }
-

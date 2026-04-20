@@ -24,4 +24,3 @@ class EnsureVendor
         return $next($request);
     }
 }
-

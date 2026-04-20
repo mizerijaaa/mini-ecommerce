@@ -5,13 +5,14 @@ namespace Database\Factories\Domain\ProductCatalog\Models;
 use App\Domain\ProductCatalog\Models\Product;
 use App\Domain\ProductCatalog\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @extends Factory<Product>
  */
 class ProductFactory extends Factory
 {
-    /** @var class-string<\Illuminate\Database\Eloquent\Model> */
+    /** @var class-string<Model> */
     protected $model = Product::class;
 
     public function definition(): array
@@ -54,4 +55,3 @@ class ProductFactory extends Factory
         ];
     }
 }
-

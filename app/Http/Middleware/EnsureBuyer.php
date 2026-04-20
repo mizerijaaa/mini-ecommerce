@@ -25,4 +25,3 @@ class EnsureBuyer
         return $next($request);
     }
 }
-

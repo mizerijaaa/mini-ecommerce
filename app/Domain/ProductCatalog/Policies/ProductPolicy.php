@@ -32,4 +32,3 @@ class ProductPolicy
         return $user->isVendor() && ($user->isAdmin() || $user->vendor?->id === $product->vendor_id);
     }
 }
-

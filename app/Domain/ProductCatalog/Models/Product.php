@@ -5,6 +5,7 @@ namespace App\Domain\ProductCatalog\Models;
 use App\Domain\Cart\Models\CartItem;
 use App\Domain\OrderManagement\Models\OrderItem;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,31 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use HasFactory, HasUlids, SoftDeletes;
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', 'active');
+    }
+
+    public function scopeForVendor(Builder $query, string|Vendor $vendor): Builder
+    {
+        $vendorId = $vendor instanceof Vendor ? $vendor->id : $vendor;
+
+        return $query->where('vendor_id', $vendorId);
+    }
+
+    public function scopePriceBetween(Builder $query, float|int|string|null $min, float|int|string|null $max): Builder
+    {
+        if ($min !== null && $min !== '') {
+            $query->where('price', '>=', (float) $min);
+        }
+
+        if ($max !== null && $max !== '') {
+            $query->where('price', '<=', (float) $max);
+        }
+
+        return $query;
+    }
 
     public function vendor(): BelongsTo
     {
@@ -41,4 +67,3 @@ class Product extends Model
         ];
     }
 }
-

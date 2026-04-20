@@ -38,4 +38,3 @@ class OrderItem extends Model
         ];
     }
 }
-

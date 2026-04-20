@@ -29,7 +29,7 @@ class CartSeeder extends Seeder
 
                 $itemsCount = fake()->numberBetween(2, 6);
 
-                /** @var Collection<int, \App\Domain\ProductCatalog\Models\Product> $picked */
+                /** @var Collection<int, Product> $picked */
                 $picked = $products->random(min($itemsCount, $products->count()));
 
                 foreach ($picked as $product) {
@@ -43,4 +43,3 @@ class CartSeeder extends Seeder
             });
     }
 }
-

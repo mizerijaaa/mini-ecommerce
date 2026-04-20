@@ -5,13 +5,14 @@ namespace Database\Factories\Domain\OrderManagement\Models;
 use App\Domain\IdentityAndAccess\Models\User;
 use App\Domain\OrderManagement\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @extends Factory<Order>
  */
 class OrderFactory extends Factory
 {
-    /** @var class-string<\Illuminate\Database\Eloquent\Model> */
+    /** @var class-string<Model> */
     protected $model = Order::class;
 
     public function definition(): array
@@ -23,4 +24,3 @@ class OrderFactory extends Factory
         ];
     }
 }
-

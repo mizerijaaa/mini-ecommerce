@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Volt::route('/marketplace', 'market.index')->name('market.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

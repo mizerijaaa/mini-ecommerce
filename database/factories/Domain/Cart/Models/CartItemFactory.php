@@ -6,13 +6,14 @@ use App\Domain\Cart\Models\Cart;
 use App\Domain\Cart\Models\CartItem;
 use App\Domain\ProductCatalog\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @extends Factory<CartItem>
  */
 class CartItemFactory extends Factory
 {
-    /** @var class-string<\Illuminate\Database\Eloquent\Model> */
+    /** @var class-string<Model> */
     protected $model = CartItem::class;
 
     public function definition(): array
@@ -24,4 +25,3 @@ class CartItemFactory extends Factory
         ];
     }
 }
-

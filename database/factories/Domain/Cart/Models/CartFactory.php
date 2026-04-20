@@ -5,13 +5,14 @@ namespace Database\Factories\Domain\Cart\Models;
 use App\Domain\Cart\Models\Cart;
 use App\Domain\IdentityAndAccess\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @extends Factory<Cart>
  */
 class CartFactory extends Factory
 {
-    /** @var class-string<\Illuminate\Database\Eloquent\Model> */
+    /** @var class-string<Model> */
     protected $model = Cart::class;
 
     public function definition(): array
@@ -21,4 +22,3 @@ class CartFactory extends Factory
         ];
     }
 }
-
