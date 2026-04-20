@@ -8,9 +8,11 @@ use App\Domain\OrderManagement\Actions\ClearCartAction;
 use App\Domain\OrderManagement\Actions\CreateOrderAction;
 use App\Domain\OrderManagement\Actions\CreateOrderItemsAction;
 use App\Domain\OrderManagement\Actions\DecrementStockAction;
+use App\Domain\OrderManagement\Actions\UpdateOrderItemsStatusAction;
 use App\Domain\OrderManagement\Actions\UpdateOrderStatusAction;
 use App\Domain\OrderManagement\DTOs\CheckoutDTO;
 use App\Domain\OrderManagement\DTOs\CreateOrderDTO;
+use App\Domain\OrderManagement\Enums\OrderStatus;
 use App\Domain\OrderManagement\Exceptions\CheckoutException;
 use App\Domain\OrderManagement\Exceptions\PaymentFailedException;
 use App\Domain\OrderManagement\Models\Order;
@@ -26,6 +28,7 @@ class CheckoutService
         private readonly DecrementStockAction $decrementStock,
         private readonly ClearCartAction $clearCart,
         private readonly UpdateOrderStatusAction $updateStatus,
+        private readonly UpdateOrderItemsStatusAction $updateItemsStatus,
     ) {}
 
     /**
@@ -63,7 +66,7 @@ class CheckoutService
             $order = $this->createOrder->execute(new CreateOrderDTO(
                 userId: $dto->userId,
                 paymentMethod: $dto->paymentMethod,
-                status: 'pending',
+                status: OrderStatus::Pending->value,
             ));
 
             $this->createOrderItems->execute($order, $cart->items);
@@ -82,7 +85,8 @@ class CheckoutService
             }
 
             $this->clearCart->execute($cart);
-            $this->updateStatus->execute($order, 'paid');
+            $this->updateStatus->execute($order, OrderStatus::Paid->value);
+            $this->updateItemsStatus->execute($order, OrderStatus::Paid->value);
 
             return $order->load('items');
         });

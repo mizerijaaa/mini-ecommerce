@@ -2,6 +2,7 @@
 
 namespace App\Domain\OrderManagement\Models;
 
+use App\Domain\OrderManagement\Enums\OrderStatus;
 use App\Domain\ProductCatalog\Models\Product;
 use App\Domain\ProductCatalog\Models\Vendor;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['order_id', 'product_id', 'vendor_id', 'quantity', 'price'])]
+#[Fillable(['order_id', 'product_id', 'vendor_id', 'quantity', 'price', 'status'])]
 class OrderItem extends Model
 {
     use HasFactory, HasUlids;
@@ -35,6 +36,7 @@ class OrderItem extends Model
         return [
             'quantity' => 'integer',
             'price' => 'decimal:2',
+            'status' => OrderStatus::class,
         ];
     }
 }

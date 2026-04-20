@@ -3,6 +3,7 @@
 namespace App\Domain\OrderManagement\Models;
 
 use App\Domain\IdentityAndAccess\Models\User;
+use App\Domain\OrderManagement\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,7 +30,7 @@ class Order extends Model
     protected function casts(): array
     {
         return [
-            'status' => 'string',
+            'status' => OrderStatus::class,
             'payment_method' => 'string',
         ];
     }

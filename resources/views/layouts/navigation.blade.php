@@ -23,6 +23,16 @@
                     <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
                         {{ __('Cart') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('buyer.orders.index')" :active="request()->routeIs('buyer.orders.*')">
+                        {{ __('My Orders') }}
+                    </x-nav-link>
+
+                    @if (Auth::user()?->isVendor())
+                        <x-nav-link :href="route('vendor.orders.index')" :active="request()->routeIs('vendor.orders.*')">
+                            {{ __('Vendor Orders') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
