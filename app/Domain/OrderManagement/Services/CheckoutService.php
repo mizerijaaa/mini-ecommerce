@@ -34,10 +34,10 @@ class CheckoutService
      */
     public function checkout(CheckoutDTO $dto): Order
     {
-        $paymentError = null;
+        $paymentErrorMessage = null;
 
         /** @var Order $order */
-        $order = DB::transaction(function () use ($dto, &$paymentError): Order {
+        $order = DB::transaction(function () use ($dto, &$paymentErrorMessage): Order {
             $cart = Cart::query()
                 ->firstOrCreate(['user_id' => $dto->userId])
                 ->load(['items.product.vendor']);
@@ -70,10 +70,9 @@ class CheckoutService
 
             $total = (float) $cart->items->sum(fn ($item) => (float) $item->product->price * (int) $item->quantity);
 
-            try {
-                $this->paymentSimulator->charge($total, (string) $order->id);
-            } catch (PaymentFailedException $e) {
-                $paymentError = $e;
+            $payment = $this->paymentSimulator->charge($total);
+            if (! $payment->success) {
+                $paymentErrorMessage = $payment->message;
 
                 return $order;
             }
@@ -88,8 +87,8 @@ class CheckoutService
             return $order->load('items');
         });
 
-        if ($paymentError instanceof PaymentFailedException) {
-            throw new PaymentFailedException((string) $order->id, $paymentError->getMessage());
+        if ($paymentErrorMessage !== null) {
+            throw new PaymentFailedException((string) $order->id, $paymentErrorMessage);
         }
 
         return $order;
