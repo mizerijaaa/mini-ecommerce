@@ -299,6 +299,7 @@ layout('layouts.app');
                                     alt="{{ $product->name }}"
                                     class="h-full w-full object-cover"
                                     loading="lazy"
+                                    onerror="this.onerror=null;this.remove();"
                                 />
                             @else
                                 <div class="h-full w-full flex items-center justify-center text-sm text-gray-500">

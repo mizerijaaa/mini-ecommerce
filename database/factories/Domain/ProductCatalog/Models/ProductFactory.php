@@ -43,6 +43,7 @@ class ProductFactory extends Factory
 
         $name = fake()->randomElement($adjectives).' '.fake()->randomElement($productTypes);
         $price = fake()->randomFloat(2, 4.99, 249.99);
+        $imageText = rawurlencode(mb_substr($name, 0, 28));
 
         return [
             'vendor_id' => Vendor::factory(),
@@ -50,7 +51,9 @@ class ProductFactory extends Factory
             'description' => fake()->paragraphs(fake()->numberBetween(1, 3), true),
             'price' => $price,
             'stock' => fake()->numberBetween(0, 250),
-            'image_url' => fake()->boolean(70) ? fake()->imageUrl(900, 900, 'product', true) : null,
+            'image_url' => fake()->boolean(70)
+                ? "https://placehold.co/900x900/png?text={$imageText}"
+                : null,
             'status' => fake()->randomElement(['draft', 'active', 'archived']),
         ];
     }

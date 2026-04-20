@@ -156,7 +156,13 @@ layout('layouts.app');
                                 <div class="p-4 flex gap-4">
                                     <div class="h-20 w-20 rounded-lg bg-gray-100 overflow-hidden shrink-0 ring-1 ring-gray-200">
                                         @if ($item['image_url'])
-                                            <img src="{{ $item['image_url'] }}" alt="{{ $item['product_name'] }}" class="h-full w-full object-cover" loading="lazy" />
+                                            <img
+                                                src="{{ $item['image_url'] }}"
+                                                alt="{{ $item['product_name'] }}"
+                                                class="h-full w-full object-cover"
+                                                loading="lazy"
+                                                onerror="this.onerror=null;this.remove();"
+                                            />
                                         @else
                                             <div class="h-full w-full flex items-center justify-center text-xs text-gray-500">No image</div>
                                         @endif
