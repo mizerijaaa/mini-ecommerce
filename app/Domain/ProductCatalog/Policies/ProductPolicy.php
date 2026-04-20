@@ -14,7 +14,7 @@ class ProductPolicy
 
     public function view(User $user, Product $product): bool
     {
-        return $user->isVendor() && ($user->isAdmin() || $user->vendor?->id === $product->vendor_id);
+        return $user->isAdmin() || ($user->isVendor() && $user->vendor?->id === $product->vendor_id);
     }
 
     public function create(User $user): bool
@@ -24,11 +24,11 @@ class ProductPolicy
 
     public function update(User $user, Product $product): bool
     {
-        return $user->isVendor() && ($user->isAdmin() || $user->vendor?->id === $product->vendor_id);
+        return $user->isAdmin() || ($user->isVendor() && $user->vendor?->id === $product->vendor_id);
     }
 
     public function delete(User $user, Product $product): bool
     {
-        return $user->isVendor() && ($user->isAdmin() || $user->vendor?->id === $product->vendor_id);
+        return $user->isAdmin() || ($user->isVendor() && $user->vendor?->id === $product->vendor_id);
     }
 }
