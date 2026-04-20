@@ -24,4 +24,9 @@ class Cart extends Model
     {
         return $this->hasMany(CartItem::class);
     }
+
+    public function itemsWithProducts(): HasMany
+    {
+        return $this->items()->with(['product.vendor']);
+    }
 }

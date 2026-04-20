@@ -9,6 +9,7 @@ Route::get('/', function () {
 });
 
 Volt::route('/marketplace', 'market.index')->name('market.index');
+Volt::route('/cart', 'cart.index')->middleware(['auth', 'buyer'])->name('cart.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
