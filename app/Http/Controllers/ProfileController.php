@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\IdentityAndAccess\Actions\DeleteUserAction;
+use App\Domain\IdentityAndAccess\Actions\UpdateProfileAction;
+use App\Domain\IdentityAndAccess\DTOs\DeleteUserDTO;
+use App\Domain\IdentityAndAccess\DTOs\UpdateProfileDTO;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,13 +30,13 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $validated = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
+        app(UpdateProfileAction::class)->execute(new UpdateProfileDTO(
+            userId: (string) $request->user()->id,
+            name: (string) $validated['name'],
+            email: (string) $validated['email'],
+        ));
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
@@ -50,7 +54,9 @@ class ProfileController extends Controller
 
         Auth::logout();
 
-        $user->delete();
+        app(DeleteUserAction::class)->execute(new DeleteUserDTO(
+            userId: (string) $user->id,
+        ));
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

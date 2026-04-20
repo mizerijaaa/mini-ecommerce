@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Domain\IdentityAndAccess\Actions\RegisterUserAction;
+use App\Domain\IdentityAndAccess\DTOs\RegisterUserDTO;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -36,12 +38,12 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'buyer',
-        ]);
+        $user = app(RegisterUserAction::class)->execute(new RegisterUserDTO(
+            name: (string) $request->name,
+            email: (string) $request->email,
+            passwordHash: Hash::make((string) $request->password),
+            role: 'buyer',
+        ));
 
         event(new Registered($user));
 
