@@ -2,6 +2,15 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <div class="mb-4">
+        <a
+            href="{{ route('market.index') }}"
+            class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900"
+        >
+            ← Back to marketplace
+        </a>
+    </div>
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
