@@ -60,6 +60,12 @@ new class extends Component {
             quantity: 1,
         ));
 
+        if (! $result->allowed) {
+            $this->dispatch('toast', text: $result->warning ?? 'Unable to add to cart.');
+
+            return;
+        }
+
         $this->dispatch('toast', text: $result->warning ?? 'Added to cart.');
     }
 
@@ -91,7 +97,7 @@ layout('layouts.app');
 <div
     class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
     x-data="{ filtersOpen: false, toastOpen: false, toastText: '' }"
-    x-on:toast.window="toastText = $event.detail.text; toastOpen = true; setTimeout(() => toastOpen = false, 2200)"
+    x-on:toast="toastText = $event.detail.text; toastOpen = true; setTimeout(() => toastOpen = false, 2200)"
 >
     <div class="fixed inset-0 z-40 lg:hidden" x-show="filtersOpen" x-transition.opacity>
         <div class="absolute inset-0 bg-black/30" @click="filtersOpen = false"></div>
@@ -325,9 +331,14 @@ layout('layouts.app');
                                     type="button"
                                     wire:click="addToCart('{{ $product->id }}')"
                                     wire:loading.attr="disabled"
-                                    class="inline-flex flex-1 items-center justify-center rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+                                    @disabled((int) $product->stock <= 0)
+                                    class="inline-flex flex-1 items-center justify-center rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed"
                                 >
-                                    Add to cart
+                                    @if ((int) $product->stock <= 0)
+                                        Out of stock
+                                    @else
+                                        Add to cart
+                                    @endif
                                 </button>
                                 <a href="{{ route('cart.index') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900">
                                     Go to cart
