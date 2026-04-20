@@ -31,7 +31,7 @@
                             {{ __('My Orders') }}
                         </x-nav-link>
 
-                        @if (Auth::user()?->isVendor())
+                        @if (Auth::user()?->hasVendorProfile() && ! Auth::user()?->isAdmin())
                             <x-nav-link :href="route('vendor.orders.index')" :active="request()->routeIs('vendor.orders.*')">
                                 {{ __('Vendor Orders') }}
                             </x-nav-link>
@@ -126,7 +126,7 @@
                     {{ __('My Orders') }}
                 </x-responsive-nav-link>
 
-                @if (Auth::user()?->isVendor())
+                @if (Auth::user()?->hasVendorProfile() && ! Auth::user()?->isAdmin())
                     <x-responsive-nav-link :href="route('vendor.orders.index')" :active="request()->routeIs('vendor.orders.*')">
                         {{ __('Vendor Orders') }}
                     </x-responsive-nav-link>
